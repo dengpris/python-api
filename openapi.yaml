@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: Priscillas Sample API
+  description: watsonx Orchestrate testing.
+  x-ibm-application-name: Priscilla Bot 0.0.1
+  x-ibm-application-id: Priscilla-Bot-0.0.1
+  x-ibm-skill-type: imported
+  # x-ibm-skill-headers:
+  #   caller-id: caller-id
+  #   caller-name: caller-name
+  x-ibm-comm-timeouts:
+    connectTimeout: 20000
+    responseTimeout: 120000
+  version: 0.0.1
+
+security:
+  - BasicAuth: []
+servers:
+  - url: https://rnttz-2001-4958-2bc9-c01-e061-2800-18c4-4e93.a.free.pinggy.link/
+    description: Will Localhost work?
+
+tags:
+  - name: hello
+    description: Greet the user
+
+paths:
+  /hello:
+    get:
+      summary: Greet the user
+      description: Say hello to the user, greeting depends on the time of day
+      tags:
+        - hello
+      # requestBody:
+      #   description: the greeting
+      #   required: true
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/job_description_request_body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: string
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
