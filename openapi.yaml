@@ -16,8 +16,8 @@ info:
 security:
   - BasicAuth: []
 servers:
-  - url: https://rnttz-2001-4958-2bc9-c01-e061-2800-18c4-4e93.a.free.pinggy.link/
-    description: Will Localhost work?
+  - url: https://python-api-production-f415.up.railway.app/
+    description: Hosted on Railway.app
 
 tags:
   - name: hello
