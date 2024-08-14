@@ -22,9 +22,16 @@ def greeting():
     else:
         msg = "You're up late!"
     
+    # TODO: add gif of time of day
+    
     return jsonify({"msg": msg}), 200
 
-
+@app.route('/todo-list', methods=['GET', 'POST'])
+def todo_list():
+    if request.method == 'GET':
+        return 0
+    else:
+        return 0
 
 # Run flask app
 if __name__ == '__main__':
