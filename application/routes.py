@@ -1,14 +1,13 @@
-from flask import Flask, jsonify, request
-import json
 from datetime import datetime
+from flask import Blueprint, request, jsonify
 
-app = Flask(__name__)
+bp = Blueprint('bp', __name__)
 
-@app.route('/')
+@bp.route('/')
 def home():
     return "hello world"
 
-@app.route('/hello')
+@bp.route('/hello')
 def greeting():
     now = datetime.now()
     hour = now.hour
@@ -26,13 +25,9 @@ def greeting():
     
     return jsonify({"msg": msg}), 200
 
-@app.route('/todo-list', methods=['GET', 'POST'])
+@bp.route('/todo-list', methods=['GET', 'POST'])
 def todo_list():
     if request.method == 'GET':
         return 0
-    else:
+    elif request.method == 'POST':
         return 0
-
-# Run flask app
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)

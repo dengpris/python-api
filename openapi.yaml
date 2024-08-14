@@ -4,10 +4,11 @@ info:
   description: watsonx Orchestrate testing.
   x-ibm-application-name: Priscilla Bot 0.0.1
   x-ibm-application-id: Priscilla-Bot-0.0.1
+  x-ibm-application-icon: <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 52.18"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
   x-ibm-skill-type: imported
-  # x-ibm-skill-headers:
-  #   caller-id: caller-id
-  #   caller-name: caller-name
+  x-ibm-skill-headers:
+    caller-id: caller-id
+    caller-name: caller-name
   x-ibm-comm-timeouts:
     connectTimeout: 20000
     responseTimeout: 120000
@@ -16,37 +17,46 @@ info:
 security:
   - BasicAuth: []
 servers:
+  # Development
+  # - url: https://rneqp-2001-4958-2bc9-c01-de6-9b2c-b9e0-ad82.a.free.pinggy.link
+  # Production
   - url: https://python-api-production-f415.up.railway.app/
     description: Hosted on Railway.app
 
 tags:
   - name: hello
     description: Greet the user
+  - name: todo-list
+    description: Get database of todo items
 
 paths:
   /hello:
     get:
       summary: Greet the user
-      description: Say hello to the user, greeting depends on the time of day
+      description: Greet the user, greeting depends on the time of day
       tags:
         - hello
-      # requestBody:
-      #   description: the greeting
-      #   required: true
-      #   content:
-      #     application/json:
-      #       schema:
-      #         $ref: '#/components/schemas/job_description_request_body'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema: 
-                type: string
+                $ref: '#/components/schemas/hello'
+      # TODO: Change json msg into chat message using
+      # x-ibm-nl-output-template: {$.msg}
+  /todo-list:
+
+      
 
 components:
   securitySchemes:
     BasicAuth:
       type: http
       scheme: basic
+  schemas:
+    hello:
+      type: object
+      properties:
+        msg:
+          type: string
