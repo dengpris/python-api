@@ -45,9 +45,19 @@ paths:
                 $ref: '#/components/schemas/hello'
       # TODO: Change json msg into chat message using
       # x-ibm-nl-output-template: {$.msg}
-  /todo-list:
-
-      
+  /item-list:
+    get:
+      summary: Get list of items
+      description: Get list of items in the database
+      # tags:
+      #   - item-list
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/item-list'
 
 components:
   securitySchemes:
@@ -60,3 +70,17 @@ components:
       properties:
         msg:
           type: string
+    items:
+      type: object
+      properties:
+        id: 
+          type: integer
+        name:
+          type: string
+        priority:
+          type: integer
+    item-list:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
+        
