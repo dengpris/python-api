@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify
+from application.model import db, Item
 
 bp = Blueprint('bp', __name__)
 
@@ -25,9 +26,23 @@ def greeting():
     
     return jsonify({"msg": msg}), 200
 
-@bp.route('/todo-list', methods=['GET', 'POST'])
-def todo_list():
-    if request.method == 'GET':
-        return 0
-    elif request.method == 'POST':
-        return 0
+@bp.route('/item-list')
+def item_list():
+    items = db.session.execute(db.select(Item).order_by(Item.name)).scalars()
+    items_list = [item.as_dict() for item in items]
+    
+    return jsonify(items_list), 200
+
+@bp.route("/item-list/create", methods=["GET", "POST"])
+def item_create():
+    if request.method == "POST":
+        item = Item(
+            name=request.form["name"],
+            priority=request.form["priority"],
+        )
+        db.session.add(item)
+        db.session.commit()
+        return jsonify(item.as_dict()), 201
+
+    # TODO: Implement GET
+    return {}, 400

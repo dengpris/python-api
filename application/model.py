@@ -9,7 +9,7 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
-class TodoItem(db.Model):
+class Item(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True)
     priority: Mapped[int] = mapped_column()
@@ -17,3 +17,6 @@ class TodoItem(db.Model):
     __table_args__ = (
         CheckConstraint('priority BETWEEN 1 AND 5', name='check_priority_range'),
     )
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
