@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_httpauth import HTTPBasicAuth
 from application.routes import bp
 from application.model import Item
 # from application.config import Config
+from dotenv import load_dotenv
 
+load_dotenv()
 migrate = Migrate()
 
 def populate_items(app, db):
@@ -37,10 +40,13 @@ def create_app(test_config=None):
     """
     app = Flask(__name__)
     app.config.from_object('application.config.Config')
+    
+    # from . import auth
+    # app.register_blueprint(auth.bp)
+    app.register_blueprint(bp)
 
     from application.model import db
     db.init_app(app)
-    app.register_blueprint(bp)
 
     migrate.db = db
     migrate.init_app(app)

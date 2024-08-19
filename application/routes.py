@@ -1,8 +1,13 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify
+from requests.auth import HTTPBasicAuth
 from application.model import db, Item
+import requests
+import os
 
 bp = Blueprint('bp', __name__)
+
+auth = HTTPBasicAuth(os.getenv('USERNAME'), os.getenv('PASSWORD'))
 
 @bp.route('/')
 def home():
@@ -46,3 +51,9 @@ def item_create():
 
     # TODO: Implement GET
     return {}, 400
+
+@bp.route("/incident")
+def incident_list():
+    url = os.getenv('URL') + '/api/now/v1/table/incident'
+    incidents = requests.get(url, auth=auth)
+    return incidents.json(), 201
