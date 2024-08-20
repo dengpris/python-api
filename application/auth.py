@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import current_user, login_user, login_required, logout_user, LoginManager
+# from werkzeug.security import generate_password_hash, check_password_hash
 from requests.auth import HTTPBasicAuth
 import requests
 import os
+
+from application.model import User, db
 
 auth = Blueprint('auth', __name__)
 
@@ -29,5 +32,21 @@ def login():
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
     
-    return "Success", 200
+    new_user = User.query.get(username) # if this returns a user, then the email already exists in database
 
+    if not new_user: 
+        new_user = User(username=username)
+        db.session.add(new_user)
+        db.session.commit()
+    login_user(new_user)
+
+    next_page = request.args.get("next")
+    if next_page:
+        return redirect(next_page)
+    return redirect(url_for('bp.home'))
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))

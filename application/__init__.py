@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 from application.routes import bp
 from application.auth import auth
-from application.model import Item
+from application.model import Item, User
 # from application.config import Config
 from dotenv import load_dotenv
 
@@ -18,7 +19,6 @@ def populate_items(app, db):
         {'name': 'Item 3', 'priority': 3},
         {'name': 'Item 4', 'priority': 4},
         {'name': 'Item 5', 'priority': 5},
-        # Add more items as needed
     ]
 
     try:
@@ -39,8 +39,22 @@ def create_app(test_config=None):
     :return: A `Flask` application instance
     """
     app = Flask(__name__)
+    app.secret_key = "super secret key"
     app.config.from_object('application.config.Config')
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        print('kadjfklsdjfl;kd')
+        return User.query.get(user_id)
     
+    @login_manager.unauthorized_handler
+    def unauthorized_callback():
+        return redirect('/login?next=' + request.path)
+
     app.register_blueprint(auth)
     app.register_blueprint(bp)
 

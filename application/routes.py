@@ -1,5 +1,6 @@
 from datetime import datetime
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
+from flask_login import login_required, current_user
 from requests.auth import HTTPBasicAuth
 from application.model import db, Item
 import requests
@@ -8,10 +9,14 @@ import os
 bp = Blueprint('bp', __name__)
 
 auth = HTTPBasicAuth(os.getenv('USERNAME'), os.getenv('PASSWORD'))
+# auth = {
+#     "client_id": os.getenv('CLIENT_ID'),
+#     "client_secret": os.getenv('CLIENT_SECRET')
+# }
 
 @bp.route('/')
 def home():
-    return "hello world"
+    return render_template('home.html')
 
 @bp.route('/hello')
 def greeting():
@@ -53,11 +58,13 @@ def item_create():
     return {}, 400
 
 @bp.route("/incident-list")
+@login_required
 def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     incidents = requests.get(url, auth=auth)
     return incidents.json(), 201
 
 @bp.route("/incident/{id}")
+@login_required
 def incident_get():
     url = os.getenv('URL') + '/api/now/v1/table/incident/{id}'
