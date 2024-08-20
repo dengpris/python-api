@@ -52,8 +52,12 @@ def item_create():
     # TODO: Implement GET
     return {}, 400
 
-@bp.route("/incident")
+@bp.route("/incident-list")
 def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     incidents = requests.get(url, auth=auth)
     return incidents.json(), 201
+
+@bp.route("/incident/{id}")
+def incident_get():
+    url = os.getenv('URL') + '/api/now/v1/table/incident/{id}'
