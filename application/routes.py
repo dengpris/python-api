@@ -8,6 +8,7 @@ import os
 
 bp = Blueprint('bp', __name__)
 
+headers = {'Content-type': 'application/json'}
 auth = HTTPBasicAuth(os.getenv('USERNAME'), os.getenv('PASSWORD'))
 # auth = {
 #     "client_id": os.getenv('CLIENT_ID'),
@@ -62,9 +63,22 @@ def item_create():
 def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     incidents = requests.get(url, auth=auth)
-    return incidents.json(), 201
+    return incidents.json(), 200
 
 @bp.route("/incident/{id}")
 @login_required
 def incident_get():
     url = os.getenv('URL') + '/api/now/v1/table/incident/{id}'
+    incident = requests.get(url, auth=auth)
+    return incident.json(), 200
+
+@bp.route("/incident/create", methods=['GET', 'POST'])
+@login_required
+def incident_create():
+    url = os.getenv('URL') + 'api/now/v1/table/incident'
+    if request.method == "GET":
+        return render_template('create_incident.html')
+    else:
+        # data = json.dumps(request.form)
+        # result = requests.post(url, auth=auth, headers=headers, json=data)
+        return jsonify(request.form)

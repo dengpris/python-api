@@ -48,7 +48,6 @@ def create_app(test_config=None):
 
     @login_manager.user_loader
     def load_user(user_id):
-        print('kadjfklsdjfl;kd')
         return User.query.get(user_id)
     
     @login_manager.unauthorized_handler
