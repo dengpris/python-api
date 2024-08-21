@@ -5,11 +5,14 @@ from requests.auth import HTTPBasicAuth
 from application.model import db, Item
 import requests
 import os
+import json
 
 bp = Blueprint('bp', __name__)
 
 headers = {'Content-type': 'application/json'}
-auth = HTTPBasicAuth(os.getenv('USERNAME'), os.getenv('PASSWORD'))
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
+auth = HTTPBasicAuth(username, password)
 # auth = {
 #     "client_id": os.getenv('CLIENT_ID'),
 #     "client_secret": os.getenv('CLIENT_SECRET')
@@ -68,7 +71,7 @@ def incident_list():
 @bp.route("/incident/{id}")
 @login_required
 def incident_get():
-    url = os.getenv('URL') + '/api/now/v1/table/incident/{id}'
+    url = os.getenv('URL') + f'/api/now/v1/table/incident/{id}'
     incident = requests.get(url, auth=auth)
     return incident.json(), 200
 
@@ -77,8 +80,15 @@ def incident_get():
 def incident_create():
     url = os.getenv('URL') + 'api/now/v1/table/incident'
     if request.method == "GET":
-        return render_template('create_incident.html')
+        return render_template('create_incident.html', callerid=get_callerid(username))
     else:
         # data = json.dumps(request.form)
         # result = requests.post(url, auth=auth, headers=headers, json=data)
         return jsonify(request.form)
+    
+
+def get_callerid(username):
+    url = os.getenv('URL') + f'/api/now/table/sys_user?sysparm_query=user_name={username}'
+    res = requests.get(url, auth=auth)
+    
+    return res.json()['result'][0]['email']
