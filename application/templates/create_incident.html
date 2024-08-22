@@ -8,21 +8,22 @@
             <div class="field">
                 <div class="control">
                     <label for="callerid">Caller ID *</label>
-                    <input class="input is-large" type="callerid" name="callerid" value={{callerid}} autofocus="" disabled>
+                    <input class="input is-large" type="callerid" name="caller_id" value={{callerid}} autofocus="" readonly style="color: #787878; background-color: lightgray">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
                     <label for="short-description">Short Description *</label>
-                    <textarea class="textarea" name="short-description" rows=2 placeholder="A short description of your issue" required></textarea>
+                    <textarea class="textarea" name="short_description" rows=2 placeholder="A short description of your issue" required></textarea>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <label for="short-description">Description</label>
-                    <textarea class="textarea" name="short-description" placeholder="A description of your issue"></textarea>                </div>
+                    <label for="description">Description</label>
+                    <textarea class="textarea" name="description" placeholder="A description of your issue"></textarea>
+                </div>
             </div>
 
             <button class="button is-block is-info is-large is-fullwidth">Create</button>

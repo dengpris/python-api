@@ -82,9 +82,10 @@ def incident_create():
     if request.method == "GET":
         return render_template('create_incident.html', callerid=get_callerid(username))
     else:
-        # data = json.dumps(request.form)
-        # result = requests.post(url, auth=auth, headers=headers, json=data)
-        return jsonify(request.form)
+        data = json.dumps(request.form)
+        result = requests.post(url, auth=auth, headers=headers, data=data)
+        return result.json(), 201
+        # return jsonify(request.form)
     
 
 def get_callerid(username):
