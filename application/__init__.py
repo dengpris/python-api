@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_cors import CORS
 from application.routes import bp
 from application.auth import auth
 from application.model import Item, User
@@ -41,6 +42,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.secret_key = "super secret key"
     app.config.from_object('application.config.Config')
+    cors = CORS(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
