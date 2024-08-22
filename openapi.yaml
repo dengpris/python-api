@@ -80,6 +80,8 @@ paths:
     get:
       summary: Get incidents
       description: Get all incidents from ServiceNow
+      security:
+        - BasicAuth: []
       responses:
         '200':
           description: OK
