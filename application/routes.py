@@ -68,9 +68,9 @@ def incident_list():
     incidents = requests.get(url, auth=auth)
     return incidents.json(), 200
 
-@bp.route("/incident/<id>")
+@bp.route("/incident/{id}")
 @login_required
-def incident_get(id):
+def incident_get():
     url = os.getenv('URL') + f'/api/now/v1/table/incident/{id}'
     incident = requests.get(url, auth=auth)
     return incident.json(), 200
