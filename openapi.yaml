@@ -17,9 +17,6 @@ info:
 security:
   - BasicAuth: []
 servers:
-  # Development
-  # - url: https://rneqp-2001-4958-2bc9-c01-de6-9b2c-b9e0-ad82.a.free.pinggy.link
-  # Production
   - url: https://python-api-production-f415.up.railway.app/
     description: Hosted on Railway.app
 
@@ -34,8 +31,8 @@ paths:
     get:
       summary: Greet the user
       description: Greet the user, greeting depends on the time of day
-      tags:
-        - hello
+      # tags:
+      #   - hello
       responses:
         '200':
           description: OK
@@ -57,7 +54,39 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/item-list'
+                $ref: '#/components/schemas/item-list'
+  /incident/{id}:
+    get:
+      summary: Get incident
+      description: Get incident in ServiceNow
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            title: ID
+            # x-ibm-show: false
+          required: true
+          description: unique job id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/incident'
+  
+  /incident-list:
+    get:
+      summary: Get incidents
+      description: Get all incidents from ServiceNow
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/incident-list'
 
 components:
   securitySchemes:
@@ -70,7 +99,7 @@ components:
       properties:
         msg:
           type: string
-    items:
+    Item:
       type: object
       properties:
         id: 
@@ -83,4 +112,36 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Item'
-        
+    sysID:
+    #sysID is a required output for composite skills, not shown to user in table
+      x-ibm-show: false
+      type: string
+    incident:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/sysID'
+        opened_at:
+          type: string
+        assignment_group:
+          type: string
+        assigned_to:
+          type: string
+        urgency:
+          type: string
+        opened_by:
+            type: string
+            x-ibm-important: true
+        state:
+          type: string
+        description:
+          type: string
+        short_description:
+          type: string
+          x-ibm-important: true
+        number:
+          type: string
+    incident-list:
+      type: array
+      items:
+        $ref: '#/components/schemas/incident'
