@@ -52,7 +52,8 @@ def create_app(test_config=None):
     
     @login_manager.unauthorized_handler
     def unauthorized_callback():
-        return redirect('/login?next=' + request.path)
+        return {}, 500
+        # return redirect('/login?next=' + request.path)
 
     app.register_blueprint(auth)
     app.register_blueprint(bp)
