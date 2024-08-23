@@ -33,7 +33,7 @@ def greeting():
     
     # TODO: add gif of time of day
     
-    return jsonify({"msg": msg}), 200
+    return jsonify({"msg": msg, "test": "jsakflsjd"}), 200
 
 @bp.route('/item-list')
 def item_list():
