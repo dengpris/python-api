@@ -82,13 +82,13 @@ def incident_create():
         return render_template('create_incident.html')
     else:
         data = json.dumps(request.form)
-        result = requests.post(url, auth=session.get('token'), headers=headers, data=data)
+        result = requests.post(url, headers=headers, data=data)
         return result.json()['result'], 201
         # return jsonify(request.form)
     
 
 def get_callerid(username):
-    url = os.getenv('URL') + f'/api/now/table/sys_user?sysparm_query=user_name={username}'
+    url = os.getenv('URL') + f'/api/now/table/sys_user?sysparm_query=user_name=temp'
     res = requests.get(url, auth=session.get('token'))
     
     return res.json()['result'][0]['email']

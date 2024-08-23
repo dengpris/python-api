@@ -77,7 +77,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/incident'
-  
   /incident-list:
     get:
       summary: Get incidents
@@ -91,6 +90,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/incident-list'
+  /incident/create:
+    post:
+      summary: Create incident
+      description: Create new incident in ServiceNow
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/incident'
 
 components:
   securitySchemes:
