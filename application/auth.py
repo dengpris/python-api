@@ -7,6 +7,24 @@ import os
 
 from application.model import User, db
 
+snow = {
+    "grant_type": "password",
+    "client_id": os.getenv('CLIENT_ID'),
+    "client_secret": os.getenv('CLIENT_SECRET'),
+    "username": os.getenv('USERNAME'),
+    "password": os.getenv('PASSWORD')
+}
+
+def get_token():
+    url = os.getenv('URL') + "oauth_token.do"
+    response = requests.post(
+        url,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data=snow
+    )
+    print(response.json())
+    return response.json()['access_token']
+
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])

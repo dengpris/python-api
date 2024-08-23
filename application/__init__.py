@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_cors import CORS
 from application.routes import bp
-from application.auth import auth
+from application.auth import get_token
 from application.model import Item, User
 # from application.config import Config
 from dotenv import load_dotenv
@@ -44,6 +44,11 @@ def create_app(test_config=None):
     app.config.from_object('application.config.Config')
     cors = CORS(app)
 
+    @app.before_request
+    def inject_token():
+        if 'token' not in session:
+            session['token'] = get_token()
+    
     # login_manager = LoginManager()
     # login_manager.login_view = 'auth.login'
     # login_manager.init_app(app)
@@ -57,7 +62,7 @@ def create_app(test_config=None):
     #     return jsonify({'error': 'Unauthorized'}), 401
     #     # return redirect('/login?next=' + request.path)
 
-    app.register_blueprint(auth)
+    # app.register_blueprint(auth)
     app.register_blueprint(bp)
 
     from application.model import db

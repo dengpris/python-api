@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, session
 from flask_login import login_required, current_user
 from requests.auth import HTTPBasicAuth
 from application.model import db, Item
@@ -9,14 +9,9 @@ import json
 
 bp = Blueprint('bp', __name__)
 
-headers = {'Content-type': 'application/json'}
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
-auth = HTTPBasicAuth(username, password)
-# auth = {
-#     "client_id": os.getenv('CLIENT_ID'),
-#     "client_secret": os.getenv('CLIENT_SECRET')
-# }
+# username = os.getenv('USERNAME')
+# password = os.getenv('PASSWORD')
+# auth = HTTPBasicAuth(username, password)
 
 @bp.route('/')
 def home():
@@ -65,14 +60,15 @@ def item_create():
 # @login_required
 def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
-    incidents = requests.get(url, auth=auth)
+    headers = {"Authorization": f"Bearer {session.get('token')}"}
+    incidents = requests.get(url, headers=headers)
     return incidents.json(), 200
 
 @bp.route("/incident/<id>")
 # @login_required
 def incident_get(id):
     url = os.getenv('URL') + f'/api/now/v1/table/incident/{id}'
-    incident = requests.get(url, auth=auth)
+    incident = requests.get(url, auth=session.get('token'))
     return incident.json(), 200
 
 @bp.route("/incident/create", methods=['GET', 'POST'])
@@ -83,13 +79,13 @@ def incident_create():
         return render_template('create_incident.html', callerid=get_callerid(username))
     else:
         data = json.dumps(request.form)
-        result = requests.post(url, auth=auth, headers=headers, data=data)
+        result = requests.post(url, auth=session.get('token'), headers=headers, data=data)
         return result.json(), 201
         # return jsonify(request.form)
     
 
 def get_callerid(username):
     url = os.getenv('URL') + f'/api/now/table/sys_user?sysparm_query=user_name={username}'
-    res = requests.get(url, auth=auth)
+    res = requests.get(url, auth=session.get('token'))
     
     return res.json()['result'][0]['email']
