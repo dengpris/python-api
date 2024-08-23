@@ -59,6 +59,7 @@ def item_create():
 @bp.route("/incident-list")
 # @login_required
 def incident_list():
+    # Not working in Orchestrate
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     headers = {"Authorization": f"Bearer {session.get('token')}"}
     incidents = requests.get(url, headers=headers)

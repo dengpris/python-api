@@ -15,7 +15,7 @@ info:
   version: 0.0.1
 
 security:
-  - BasicAuth: []
+  - oAuth2: []
 servers:
   - url: https://python-api-production-f415.up.railway.app/
     description: Hosted on Railway.app
@@ -31,8 +31,8 @@ paths:
     get:
       summary: Greet the user
       description: Greet the user, greeting depends on the time of day
-      # tags:
-      #   - hello
+      tags:
+        - hello
       responses:
         '200':
           description: OK
@@ -46,8 +46,8 @@ paths:
     get:
       summary: Get list of items
       description: Get list of items in the database
-      # tags:
-      #   - item-list
+      tags:
+        - item-list
       responses:
         '201':
           description: Created
@@ -59,12 +59,14 @@ paths:
     get:
       summary: Get incident
       description: Get incident in ServiceNow
+      security:
+        - oAuth2: []
       parameters:
         - in: path
           name: id
           schema:
             type: string
-            title: ID
+            title: sys_id
             # x-ibm-show: false
           required: true
           description: unique job id
@@ -80,8 +82,8 @@ paths:
     get:
       summary: Get incidents
       description: Get all incidents from ServiceNow
-      security:
-        - BasicAuth: []
+      # security:
+      #   - oAuth2: []
       responses:
         '200':
           description: OK
@@ -92,9 +94,12 @@ paths:
 
 components:
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
+    oAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dev251468.service-now.com/oauth_token.do
+          scopes: {}
   schemas:
     hello:
       type: object
@@ -121,8 +126,9 @@ components:
     incident:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/sysID'
+        sys_id:
+          # $ref: '#/components/schemas/sysID'
+          type: string
         opened_at:
           type: string
         assignment_group:
