@@ -76,13 +76,15 @@ def incident_get(id):
 @bp.route("/incident/create", methods=['GET', 'POST'])
 # @login_required
 def incident_create():
+    caller_id = request.headers['caller-id']
+    request.json['caller_id'] = caller_id
     url = os.getenv('URL') + 'api/now/v1/table/incident'
     headers = {"Authorization": f"Bearer {session.get('token')}"}
-    if request.method == "GET":
-        return render_template('create_incident.html')
-    else:
-        data = json.dumps(request.form)
-        result = requests.post(url, headers=headers, data=data)
+    # if request.method == "GET":
+    #     return render_template('create_incident.html')
+    if request.method == "POST":
+
+        result = requests.post(url, headers=headers, json=request.json)
         return result.json()['result'], 201
         # return jsonify(request.form)
     

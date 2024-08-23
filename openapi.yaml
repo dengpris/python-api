@@ -94,6 +94,14 @@ paths:
     post:
       summary: Create incident
       description: Create new incident in ServiceNow
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                  short_description:
+                    type: string
+                    
       responses:
         '201':
           description: Created
@@ -131,7 +139,7 @@ components:
         $ref: '#/components/schemas/Item'
     sysID:
     #sysID is a required output for composite skills, not shown to user in table
-      x-ibm-show: false
+      x-ibm-show: true
       type: string
     incident:
       type: object

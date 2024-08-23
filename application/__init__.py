@@ -46,8 +46,7 @@ def create_app(test_config=None):
 
     @app.before_request
     def inject_token():
-        if 'token' not in session:
-            session['token'] = get_token()
+        session['token'] = get_token()
     
     # login_manager = LoginManager()
     # login_manager.login_view = 'auth.login'
