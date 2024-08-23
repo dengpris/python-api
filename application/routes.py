@@ -62,25 +62,27 @@ def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     headers = {"Authorization": f"Bearer {session.get('token')}"}
     incidents = requests.get(url, headers=headers)
-    return incidents.json(), 200
+    return incidents.json()['result'], 200
 
 @bp.route("/incident/<id>")
 # @login_required
 def incident_get(id):
     url = os.getenv('URL') + f'/api/now/v1/table/incident/{id}'
-    incident = requests.get(url, auth=session.get('token'))
-    return incident.json(), 200
+    headers = {"Authorization": f"Bearer {session.get('token')}"}
+    incident = requests.get(url, headers=headers)
+    return incident.json()['result'], 200
 
 @bp.route("/incident/create", methods=['GET', 'POST'])
 # @login_required
 def incident_create():
     url = os.getenv('URL') + 'api/now/v1/table/incident'
+    headers = {"Authorization": f"Bearer {session.get('token')}"}
     if request.method == "GET":
-        return render_template('create_incident.html', callerid=get_callerid(username))
+        return render_template('create_incident.html')
     else:
         data = json.dumps(request.form)
         result = requests.post(url, auth=session.get('token'), headers=headers, data=data)
-        return result.json(), 201
+        return result.json()['result'], 201
         # return jsonify(request.form)
     
 
