@@ -62,21 +62,21 @@ def item_create():
     return {}, 400
 
 @bp.route("/incident-list")
-@login_required
+# @login_required
 def incident_list():
     url = os.getenv('URL') + '/api/now/v1/table/incident'
     incidents = requests.get(url, auth=auth)
     return incidents.json(), 200
 
 @bp.route("/incident/<id>")
-@login_required
+# @login_required
 def incident_get(id):
     url = os.getenv('URL') + f'/api/now/v1/table/incident/{id}'
     incident = requests.get(url, auth=auth)
     return incident.json(), 200
 
 @bp.route("/incident/create", methods=['GET', 'POST'])
-@login_required
+# @login_required
 def incident_create():
     url = os.getenv('URL') + 'api/now/v1/table/incident'
     if request.method == "GET":

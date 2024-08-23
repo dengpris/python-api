@@ -44,18 +44,18 @@ def create_app(test_config=None):
     app.config.from_object('application.config.Config')
     cors = CORS(app)
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
+    # login_manager = LoginManager()
+    # login_manager.login_view = 'auth.login'
+    # login_manager.init_app(app)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(user_id)
+    # @login_manager.user_loader
+    # def load_user(user_id):
+    #     return User.query.get(user_id)
     
-    @login_manager.unauthorized_handler
-    def unauthorized_callback():
-        return jsonify({'error': 'Unauthorized'}), 401
-        # return redirect('/login?next=' + request.path)
+    # @login_manager.unauthorized_handler
+    # def unauthorized_callback():
+    #     return jsonify({'error': 'Unauthorized'}), 401
+    #     # return redirect('/login?next=' + request.path)
 
     app.register_blueprint(auth)
     app.register_blueprint(bp)
