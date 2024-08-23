@@ -1,5 +1,6 @@
 alembic==1.13.2
 aniso8601==9.0.1
+bidict==0.23.1
 blinker==1.8.2
 certifi==2024.7.4
 cffi==1.17.0
@@ -10,7 +11,9 @@ Flask==3.0.3
 Flask-Cors==4.0.1
 Flask-Login==0.6.3
 Flask-Migrate==4.0.7
+Flask-SocketIO==5.3.6
 Flask-SQLAlchemy==3.1.1
+h11==0.14.0
 idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
@@ -19,10 +22,14 @@ MarkupSafe==2.1.5
 pycparser==2.22
 pyOpenSSL==24.2.1
 python-dotenv==1.0.1
+python-engineio==4.9.1
+python-socketio==5.11.3
 pytz==2024.1
 requests==2.32.3
+simple-websocket==1.0.0
 six==1.16.0
 SQLAlchemy==2.0.32
 typing_extensions==4.12.2
 urllib3==2.2.2
 Werkzeug==3.0.3
+wsproto==1.2.0

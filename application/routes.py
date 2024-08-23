@@ -76,21 +76,24 @@ def incident_get(id):
 @bp.route("/incident/create", methods=['GET', 'POST'])
 # @login_required
 def incident_create():
-    caller_id = request.headers['caller-id']
-    request.json['caller_id'] = caller_id
-    url = os.getenv('URL') + 'api/now/v1/table/incident'
-    headers = {"Authorization": f"Bearer {session.get('token')}"}
+    request.json['caller_id'] = get_callerid('admin@example.com')
+    # url = os.getenv('URL') + 'api/now/v1/table/incident'
+    url = 'https://dev251468.service-now.com/api/now/v1/table/incident'
+    auth = {"Authorization": f"Bearer {session.get('token')}"}
+    headers = {**request.headers, **auth}
+    print(request.json)
     # if request.method == "GET":
     #     return render_template('create_incident.html')
     if request.method == "POST":
-
         result = requests.post(url, headers=headers, json=request.json)
-        return result.json()['result'], 201
+        return result.text, 201
         # return jsonify(request.form)
     
 
-def get_callerid(username):
-    url = os.getenv('URL') + f'/api/now/table/sys_user?sysparm_query=user_name=temp'
-    res = requests.get(url, auth=session.get('token'))
-    
-    return res.json()['result'][0]['email']
+def get_callerid(email):
+    url = os.getenv('URL') + f'api/now/table/sys_user?sysparm_query=email=admin@example.com'
+    # f'/api/now/table/sys_user?sysparm_query=user_name={username}'
+    headers = {"Authorization": f"Bearer {session.get('token')}"}
+
+    res = requests.get(url, headers=headers)
+    return res.json()['result'][0]['sys_id']
