@@ -86,7 +86,7 @@ def incident_create():
     #     return render_template('create_incident.html')
     if request.method == "POST":
         result = requests.post(url, headers=headers, json=request.json)
-        return result.json(), 201
+        return result.json()['result'], 201
     
 
 def get_callerid(email):
