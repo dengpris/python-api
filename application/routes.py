@@ -78,16 +78,15 @@ def incident_get(id):
 def incident_create():
     request.json['caller_id'] = get_callerid('admin@example.com')
     # url = os.getenv('URL') + 'api/now/v1/table/incident'
-    url = 'https://dev251468.service-now.com/api/now/v1/table/incident'
+    url = os.getenv('URL') + f'/api/now/v1/table/incident'
     auth = {"Authorization": f"Bearer {session.get('token')}"}
     headers = {**request.headers, **auth}
-    print(request.json)
+    headers.pop('Host', None)
     # if request.method == "GET":
     #     return render_template('create_incident.html')
     if request.method == "POST":
         result = requests.post(url, headers=headers, json=request.json)
-        return result.text, 201
-        # return jsonify(request.form)
+        return result.json(), 201
     
 
 def get_callerid(email):

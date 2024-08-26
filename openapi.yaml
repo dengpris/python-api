@@ -149,19 +149,22 @@ components:
           type: string
         opened_at:
           type: string
-        assignment_group:
-          type: string
-        assigned_to:
-          type: string
+        # assignment_group:
+        #   type: string
+        # assigned_to:
+        #   type: string
         urgency:
           type: string
-        opened_by:
-            type: string
-            x-ibm-important: true
+        caller-id:
+          type: object
+          properties:
+            value:
+              type: string
+          x-ibm-important: true
         state:
           type: string
-        description:
-          type: string
+        # description:
+        #   type: string
         short_description:
           type: string
           x-ibm-important: true
