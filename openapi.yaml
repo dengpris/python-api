@@ -17,7 +17,7 @@ info:
 security:
   - oAuth2: []
 servers:
-  - url: https://python-api-production-f415.up.railway.app/
+  - url: python-api-production-1530.up.railway.app/
     description: Hosted on Railway.app
 
 tags:

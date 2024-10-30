@@ -41,12 +41,12 @@ def create_app(test_config=None):
     """
     app = Flask(__name__)
     app.secret_key = "super secret key"
-    app.config.from_object('application.config.Config')
+    # app.config.from_object('application.config.Config')
     cors = CORS(app)
 
-    @app.before_request
-    def inject_token():
-        session['token'] = get_token()
+    # @app.before_request
+    # def inject_token():
+    #     session['token'] = get_token()
     
     # login_manager = LoginManager()
     # login_manager.login_view = 'auth.login'
@@ -64,15 +64,15 @@ def create_app(test_config=None):
     # app.register_blueprint(auth)
     app.register_blueprint(bp)
 
-    from application.model import db
-    db.init_app(app)
+    # from application.model import db
+    # db.init_app(app)
 
-    migrate.db = db
-    migrate.init_app(app)
+    # migrate.db = db
+    # migrate.init_app(app)
 
-    with app.app_context():
-        db.create_all()
+    # with app.app_context():
+    #     db.create_all()
 
-    populate_items(app, db)
+    # populate_items(app, db)
 
     return app
