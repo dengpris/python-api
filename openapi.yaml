@@ -34,14 +34,26 @@ paths:
       tags:
         - hello
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/hello'
+              schema:
+                $ref: "#/components/schemas/hello"
       # TODO: Change json msg into chat message using
       # x-ibm-nl-output-template: {$.msg}
+  /wait:
+    get:
+      description: Wait 40s
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Response after 30 seconds"
+
   /item-list:
     get:
       summary: Get list of items
@@ -49,12 +61,12 @@ paths:
       tags:
         - item-list
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/item-list'
+                $ref: "#/components/schemas/item-list"
   /incident/{id}:
     get:
       summary: Get incident
@@ -71,12 +83,12 @@ paths:
           required: true
           description: unique job id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/incident'
+                $ref: "#/components/schemas/incident"
   /incident-list:
     get:
       summary: Get incidents
@@ -84,12 +96,12 @@ paths:
       # security:
       #   - oAuth2: []
       responses:
-        '200':
+        "200":
           description: OK
-          content: 
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/incident-list'
+                $ref: "#/components/schemas/incident-list"
   /incident/create:
     post:
       summary: Create incident
@@ -99,28 +111,28 @@ paths:
           application/json:
             schema:
               properties:
-                  short_description:
-                    type: string
-                  sector: 
-                    type: string
-                  ERP_system:
-                    type: string
-                  vendor_name:
-                    type: string
-                  vendor_number:
-                    type: integer
-                  category:
-                    type: string
-                  sub_category: 
-                    type: string                
-                    
+                short_description:
+                  type: string
+                sector:
+                  type: string
+                ERP_system:
+                  type: string
+                vendor_name:
+                  type: string
+                vendor_number:
+                  type: integer
+                category:
+                  type: string
+                sub_category:
+                  type: string
+
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/incident'
+                $ref: "#/components/schemas/incident"
 
 components:
   securitySchemes:
@@ -139,7 +151,7 @@ components:
     Item:
       type: object
       properties:
-        id: 
+        id:
           type: integer
         name:
           type: string
@@ -148,9 +160,9 @@ components:
     item-list:
       type: array
       items:
-        $ref: '#/components/schemas/Item'
+        $ref: "#/components/schemas/Item"
     sysID:
-    #sysID is a required output for composite skills, not shown to user in table
+      #sysID is a required output for composite skills, not shown to user in table
       x-ibm-show: true
       type: string
     incident:
@@ -185,4 +197,4 @@ components:
     incident-list:
       type: array
       items:
-        $ref: '#/components/schemas/incident'
+        $ref: "#/components/schemas/incident"

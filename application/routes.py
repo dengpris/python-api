@@ -6,6 +6,7 @@ from application.model import db, Item
 import requests
 import os
 import json
+import time
 
 bp = Blueprint('bp', __name__)
 
@@ -34,6 +35,11 @@ def greeting():
     # TODO: add gif of time of day
     
     return jsonify({"msg": msg, "test": "jsakflsjd"}), 200
+
+@bp.route('/wait')
+def wait():
+    time.sleep(30)  # Sleep for 30 seconds
+    return "Response after 40 seconds"
 
 @bp.route('/item-list')
 def item_list():
